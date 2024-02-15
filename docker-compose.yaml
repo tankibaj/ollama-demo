@@ -1,0 +1,27 @@
+---
+version: "3.9"
+
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    hostname: ollama
+    restart: unless-stopped
+    ports:
+      - published: 11434
+        target: 11434
+        protocol: tcp
+    volumes:
+      - ollama:/root/.ollama
+#    deploy:
+#      resources:
+#        reservations:
+#          devices:
+#            - driver: nvidia
+#              count: all
+#              capabilities: [ gpu ]
+
+volumes:
+  ollama:
+    driver: local
+
