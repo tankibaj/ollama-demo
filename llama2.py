@@ -1,18 +1,16 @@
-from openai import OpenAI
+from langchain.llms import Ollama
+from langchain.callbacks.manager import CallbackManager
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
-client = OpenAI(
-    base_url='https://llm.local.naim.run/v1',
-    api_key='ollama',  # required, but unused
-)
-
-response = client.chat.completions.create(
-    model="llama2",
-    messages=[
-        # {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "Introduce yourself."},
-    ]
-)
+llm = Ollama(base_url='https://llm.local.naim.run',
+             model="llama2",
+             callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]))
 
 if __name__ == '__main__':
-    # Make the request
-    print(response.choices[0].message.content)
+    while True:
+        query = input("\nQuery: ")
+        if query == "exit":
+            break
+        if query.strip() == "":
+            continue
+        llm(query)
