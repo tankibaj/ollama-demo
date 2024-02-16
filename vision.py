@@ -64,14 +64,15 @@ def main():
     df = load_or_create_dataframe('image_descriptions.csv')
     image_files = get_png_files("./images")
 
-    print(image_files[:3])
-    print(df.head())
-
     for image_file in image_files:
         if image_file not in df['image_file'].values:
             process_image(image_file, df)
 
-    df.to_csv('image_descriptions.csv', index=False)
+    # Save the DataFrame after processing all images
+    if not df.empty:
+        df.to_csv('image_descriptions.csv', index=False)
+
+    print(df)
 
 
 if __name__ == "__main__":
